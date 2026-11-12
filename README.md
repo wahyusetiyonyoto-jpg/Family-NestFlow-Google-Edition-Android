@@ -43,3 +43,6 @@ APK:
 V1.0 sengaja tidak memakai Supabase agar autentikasi benar-benar Google-only. Data disimpan lokal pada perangkat untuk masing-masing Gmail. Gunakan Backup/Restore JSON sebelum pindah HP atau instal ulang.
 
 Sinkronisasi otomatis lintas perangkat dapat ditambahkan berikutnya memakai Google Drive Authorization API tanpa menghidupkan kembali Supabase Auth.
+
+
+Build validation marker: Google-only native branch.
