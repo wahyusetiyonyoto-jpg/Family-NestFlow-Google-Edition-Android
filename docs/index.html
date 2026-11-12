@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>SiRinci</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#0f766e;--brand2:#14b8a6;--red:#dc2626;--green:#059669;--amber:#d97706;--shadow:0 10px 30px rgba(15,23,42,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#07101f,#0f5f58)}.login-card{width:min(420px,100%);background:#fff;border-radius:24px;padding:30px;box-shadow:0 30px 80px #0004}.logo{width:58px;height:58px;border-radius:17px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800}.login h1{margin:18px 0 5px;font-size:28px}.login p{color:var(--muted);line-height:1.6}.google{width:100%;height:48px;border:1px solid var(--line);background:#fff;border-radius:12px;font-weight:750;margin-top:10px}.small{font-size:11px;color:#94a3b8}
+.app{max-width:1100px;margin:auto;padding:18px 18px 90px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.brand h1{margin:0;font-size:24px}.brand p{margin:4px 0 0;color:var(--muted);font-size:11px}.user{display:flex;align-items:center;gap:9px}.avatar{width:38px;height:38px;border-radius:50%;background:#dff5f1;color:var(--brand);display:grid;place-items:center;font-weight:850}.logout{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}.nav button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 6px;color:var(--muted);font-weight:700}.nav button.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.page{display:none}.page.active{display:block}.grid{display:grid;gap:12px}.kpis{grid-template-columns:repeat(4,1fr)}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}.kpi span{display:block;color:var(--muted);font-size:11px}.kpi strong{display:block;font-size:21px;margin-top:7px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.head h2{margin:0;font-size:16px}.btn{border:0;border-radius:10px;padding:9px 12px;font-weight:750}.primary{background:var(--brand);color:#fff}.soft{background:#eef5f4;color:var(--brand)}.danger{background:#fff0f0;color:var(--red)}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}.table th{color:var(--muted)}.money{font-weight:800}.income{color:var(--green)}.expense{color:var(--red)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted);font-weight:700}.field input,.field select{width:100%;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 10px}.form-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px}
+.modal-bg{position:fixed;inset:0;background:#0007;display:none;place-items:center;padding:18px;z-index:20}.modal-bg.open{display:grid}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:18px}.summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mini{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}.mini span{display:block;color:var(--muted);font-size:10px}.mini b{display:block;margin-top:5px}.list{display:grid;gap:8px}.item{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}.item small{display:block;color:var(--muted);margin-top:3px}.badge{padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#ecfdf5;color:#047857}.badge.warn{background:#fff7ed;color:#c2410c}.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:11px;padding:12px 14px;z-index:50;display:none}.toast.show{display:block}
+@media(max-width:760px){.app{padding:14px 12px 84px}.top{align-items:flex-start}.user .email{display:none}.nav{position:fixed;z-index:10;left:0;right:0;bottom:0;margin:0;padding:8px;background:#fff;border-top:1px solid var(--line);grid-template-columns:repeat(5,1fr)}.nav button{border:0;padding:9px 2px;font-size:10px}.kpis{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}.field.full,.form-actions{grid-column:auto}.table th:nth-child(3),.table td:nth-child(3){display:none}.summary-row{grid-template-columns:1fr}.brand h1{font-size:21px}}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+  <div class="login-card">
+    <div class="logo">SR</div>
+    <h1>SiRinci</h1>
+    <p>Catat pemasukan, pengeluaran, anggaran, dan tagihan dengan lebih sederhana. Cukup gunakan akun Gmail Anda.</p>
+    <button id="loginBtn" class="google">Masuk dengan Gmail</button>
+    <p class="small">Login diproses oleh Google melalui Supabase. SiRinci tidak menyimpan password Gmail.</p>
+  </div>
+</section>
+
+<div id="app" class="app hidden">
+  <header class="top">
+    <div class="brand"><h1>SiRinci</h1><p id="householdName">Keuangan Saya</p></div>
+    <div class="user"><div class="avatar" id="avatar">SR</div><div class="email"><b id="userName">Pengguna</b><br><small id="userEmail"></small></div><button class="logout" id="logoutBtn">Keluar</button></div>
+  </header>
+
+  <nav class="nav">
+    <button data-page="dashboard" class="active">Ringkasan</button>
+    <button data-page="transactions">Transaksi</button>
+    <button data-page="budgets">Anggaran</button>
+    <button data-page="bills">Tagihan</button>
+    <button data-page="settings">Pengaturan</button>
+  </nav>
+
+  <section id="dashboard" class="page active">
+    <div class="grid kpis">
+      <div class="card kpi"><span>Saldo</span><strong id="balance">Rp0</strong></div>
+      <div class="card kpi"><span>Pemasukan bulan ini</span><strong class="income" id="income">Rp0</strong></div>
+      <div class="card kpi"><span>Pengeluaran bulan ini</span><strong class="expense" id="expense">Rp0</strong></div>
+      <div class="card kpi"><span>Tagihan belum dibayar</span><strong id="unpaidBills">0</strong></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="head"><div><h2>Transaksi Terbaru</h2><span class="small">Aktivitas terakhir keluarga</span></div><button class="btn primary" onclick="openTransaction()">+ Transaksi</button></div>
+      <div id="recentTransactions"></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="head"><div><h2>Rekening & Dompet</h2><span class="small">Saldo dihitung otomatis dari transaksi</span></div></div>
+      <div id="accountSummary" class="summary-row"></div>
+    </div>
+  </section>
+
+  <section id="transactions" class="page">
+    <div class="card">
+      <div class="head"><div><h2>Transaksi</h2><span class="small">Pemasukan, pengeluaran, dan transfer</span></div><button class="btn primary" onclick="openTransaction()">+ Tambah</button></div>
+      <div style="overflow:auto"><table class="table"><thead><tr><th>Tanggal</th><th>Jenis</th><th>Keterangan</th><th>Rekening</th><th>Nominal</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="budgets" class="page">
+    <div class="card">
+      <div class="head"><div><h2>Anggaran Bulanan</h2><span class="small">Batasi pengeluaran per kategori</span></div><button class="btn primary" onclick="openBudget()">+ Anggaran</button></div>
+      <div id="budgetList" class="list"></div>
+    </div>
+  </section>
+
+  <section id="bills" class="page">
+    <div class="card">
+      <div class="head"><div><h2>Tagihan</h2><span class="small">Tagihan rutin keluarga</span></div><button class="btn primary" onclick="openBill()">+ Tagihan</button></div>
+      <div id="billList" class="list"></div>
+    </div>
+  </section>
+
+  <section id="settings" class="page">
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <div class="head"><div><h2>Profil Keuangan</h2><span class="small">Nama ruang keuangan Anda</span></div></div>
+        <form id="settingsForm" class="form">
+          <div class="field full"><label>Nama keuangan/keluarga</label><input id="householdInput" required></div>
+          <div class="form-actions"><button class="btn primary" type="submit">Simpan</button></div>
+        </form>
+      </div>
+      <div class="card">
+        <div class="head"><div><h2>Anggota Keluarga</h2><span class="small">Undang Gmail sebelum anggota pertama kali login</span></div><button class="btn soft" onclick="openMember()">+ Anggota</button></div>
+        <div id="memberList" class="list"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="modalBg" class="modal-bg"><div class="modal"><div class="head"><h2 id="modalTitle">Form</h2><button class="btn soft" onclick="closeModal()">Tutup</button></div><div id="modalBody"></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8"></script>
+<script>
+(function(){
+'use strict';
+var SUPABASE_URL='https://mggnfkarjjsejdrocfva.supabase.co';
+var SUPABASE_KEY='sb_publishable_hPB3Cpcf-j2CbGtibZCHpA_h8QxtpHZ';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
+var state={session:null,member:null,household:null,settings:null,accounts:[],categories:[],transactions:[],budgets:[],bills:[],members:[]};
+var month=function(){return new Date().toISOString().slice(0,7)};
+var today=function(){return new Date().toISOString().slice(0,10)};
+var rupiah=function(v){return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v||0))};
+var esc=function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var toast=function(m){var x=document.getElementById('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show')},2600)};
+var modal=function(title,html){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=html;document.getElementById('modalBg').classList.add('open')};
+window.closeModal=function(){document.getElementById('modalBg').classList.remove('open')};
+
+async function login(){
+  var redirectTo=location.origin+location.pathname;
+  var r=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirectTo}});
+  if(r.error)toast(r.error.message);
+}
+async function logout(){await sb.auth.signOut();location.reload()}
+async function bootstrap(){
+  var r=await sb.rpc('bootstrap_google_user');
+  if(r.error)throw new Error('Database SiRinci belum siap: '+r.error.message);
+}
+async function load(){
+  await bootstrap();
+  var u=state.session.user;
+  var m=await sb.from('household_members').select('*').eq('user_id',u.id).eq('active',true).limit(1).maybeSingle();
+  if(m.error||!m.data)throw new Error(m.error?m.error.message:'Profil SiRinci tidak ditemukan');
+  state.member=m.data;
+  var hid=m.data.household_id;
+  var results=await Promise.all([
+    sb.from('households').select('*').eq('id',hid).single(),
+    sb.from('household_settings').select('*').eq('household_id',hid).maybeSingle(),
+    sb.from('accounts').select('*').eq('household_id',hid).eq('active',true).order('created_at'),
+    sb.from('categories').select('*').eq('household_id',hid).eq('active',true).order('name'),
+    sb.from('transactions').select('*').eq('household_id',hid).eq('active',true).order('date',{ascending:false}).order('created_at',{ascending:false}),
+    sb.from('budgets').select('*').eq('household_id',hid).eq('active',true).eq('month',month()).order('category'),
+    sb.from('bills').select('*').eq('household_id',hid).eq('active',true).order('due_day'),
+    sb.from('household_members').select('*').eq('household_id',hid).eq('active',true).order('created_at')
+  ]);
+  results.forEach(function(x){if(x.error)throw new Error(x.error.message)});
+  state.household=results[0].data;
+  state.settings=results[1].data;
+  state.accounts=results[2].data||[];
+  state.categories=results[3].data||[];
+  state.transactions=results[4].data||[];
+  state.budgets=results[5].data||[];
+  state.bills=results[6].data||[];
+  state.members=results[7].data||[];
+  render();
+}
+function accountBalance(a){
+  var b=Number(a.opening_balance||0);
+  state.transactions.forEach(function(t){
+    var n=Number(t.amount||0);
+    if(t.type==='Pemasukan'&&t.account===a.name)b+=n;
+    if(t.type==='Pengeluaran'&&t.account===a.name)b-=n;
+    if(t.type==='Transfer'){if(t.account===a.name)b-=n;if(t.to_account===a.name)b+=n}
+  });return b;
+}
+function render(){
+  var u=state.session.user;
+  var name=(u.user_metadata&&((u.user_metadata.full_name)||(u.user_metadata.name)))||u.email.split('@')[0];
+  document.getElementById('userName').textContent=name;
+  document.getElementById('userEmail').textContent=u.email;
+  document.getElementById('avatar').textContent=name.split(/\s+/).slice(0,2).map(function(x){return x[0]}).join('').toUpperCase();
+  var hn=(state.settings&&state.settings.household_name)||(state.household&&state.household.name)||'Keuangan Saya';
+  document.getElementById('householdName').textContent=hn;
+  document.getElementById('householdInput').value=hn;
+
+  var m=month(), mt=state.transactions.filter(function(t){return String(t.date).slice(0,7)===m});
+  var inc=mt.filter(function(t){return t.type==='Pemasukan'}).reduce(function(s,t){return s+Number(t.amount||0)},0);
+  var exp=mt.filter(function(t){return t.type==='Pengeluaran'}).reduce(function(s,t){return s+Number(t.amount||0)},0);
+  var bal=state.accounts.reduce(function(s,a){return s+accountBalance(a)},0);
+  var unpaid=state.bills.filter(function(b){return b.last_paid_month!==m}).length;
+  document.getElementById('balance').textContent=rupiah(bal);
+  document.getElementById('income').textContent=rupiah(inc);
+  document.getElementById('expense').textContent=rupiah(exp);
+  document.getElementById('unpaidBills').textContent=unpaid+' tagihan';
+
+  document.getElementById('recentTransactions').innerHTML=state.transactions.slice(0,6).map(transactionItem).join('')||'<p class="small">Belum ada transaksi.</p>';
+  document.getElementById('accountSummary').innerHTML=state.accounts.map(function(a){return '<div class="mini"><span>'+esc(a.name)+'</span><b>'+rupiah(accountBalance(a))+'</b></div>'}).join('');
+  document.getElementById('transactionRows').innerHTML=state.transactions.map(function(t){return '<tr><td>'+esc(t.date)+'</td><td>'+esc(t.type)+'</td><td>'+esc(t.description||t.category||'-')+'</td><td>'+esc(t.account)+(t.to_account?' → '+esc(t.to_account):'')+'</td><td class="money '+(t.type==='Pemasukan'?'income':t.type==='Pengeluaran'?'expense':'')+'">'+rupiah(t.amount)+'</td><td><button class="btn danger" onclick="deleteTransaction(\''+t.id+'\')">Hapus</button></td></tr>'}).join('');
+  renderBudgets();renderBills();renderMembers();
+}
+function transactionItem(t){return '<div class="item"><div><b>'+esc(t.description||t.category||t.type)+'</b><small>'+esc(t.date)+' • '+esc(t.account)+(t.to_account?' → '+esc(t.to_account):'')+'</small></div><b class="'+(t.type==='Pemasukan'?'income':t.type==='Pengeluaran'?'expense':'')+'">'+rupiah(t.amount)+'</b></div>'}
+function renderBudgets(){
+  var spent={};state.transactions.filter(function(t){return t.type==='Pengeluaran'&&String(t.date).slice(0,7)===month()}).forEach(function(t){spent[t.category]=(spent[t.category]||0)+Number(t.amount||0)});
+  document.getElementById('budgetList').innerHTML=state.budgets.map(function(b){var s=spent[b.category]||0,p=b.amount?Math.round(s/b.amount*100):0;return '<div class="item"><div><b>'+esc(b.category)+'</b><small>'+rupiah(s)+' dari '+rupiah(b.amount)+'</small></div><span class="badge '+(p>100?'warn':'')+'">'+p+'%</span></div>'}).join('')||'<p class="small">Belum ada anggaran bulan ini.</p>';
+}
+function renderBills(){
+  document.getElementById('billList').innerHTML=state.bills.map(function(b){var paid=b.last_paid_month===month();return '<div class="item"><div><b>'+esc(b.name)+'</b><small>Jatuh tempo tanggal '+b.due_day+' • '+rupiah(b.amount)+'</small></div>'+(paid?'<span class="badge">Lunas</span>':'<button class="btn primary" onclick="payBill(\''+b.id+'\')">Bayar</button>')+'</div>'}).join('')||'<p class="small">Belum ada tagihan.</p>';
+}
+function renderMembers(){
+  document.getElementById('memberList').innerHTML=state.members.map(function(m){return '<div class="item"><div><b>'+esc(m.name)+'</b><small>'+esc(m.email)+'</small></div><span class="badge">'+esc(m.role)+'</span></div>'}).join('');
+}
+function opts(arr,selected){return arr.map(function(x){var v=typeof x==='string'?x:x.name;return '<option value="'+esc(v)+'" '+(v===selected?'selected':'')+'>'+esc(v)+'</option>'}).join('')}
+window.openTransaction=function(){
+  modal('Tambah Transaksi','<form id="txForm" class="form"><div class="field"><label>Jenis</label><select id="txType"><option>Pemasukan</option><option>Pengeluaran</option><option>Transfer</option></select></div><div class="field"><label>Tanggal</label><input id="txDate" type="date" value="'+today()+'"></div><div class="field"><label>Rekening</label><select id="txAccount">'+opts(state.accounts)+'</select></div><div class="field"><label>Tujuan transfer</label><select id="txTo"><option value="">-</option>'+opts(state.accounts)+'</select></div><div class="field"><label>Kategori</label><select id="txCategory">'+opts(state.categories)+'</select></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="1" required></div><div class="field full"><label>Keterangan</label><input id="txDesc"></div><div class="field full"><label>Bukti transaksi (opsional, maks 5 MB)</label><input id="txReceipt" type="file" accept="image/*,application/pdf"></div><div class="form-actions"><button class="btn primary" type="submit">Simpan</button></div></form>');
+  document.getElementById('txForm').onsubmit=saveTransaction;
+}
+async function saveTransaction(e){
+  e.preventDefault();
+  try{
+    var type=document.getElementById('txType').value, account=document.getElementById('txAccount').value, receiptPath='';
+    var file=document.getElementById('txReceipt').files[0];
+    if(file){
+      if(file.size>5*1024*1024)throw new Error('Ukuran bukti maksimal 5 MB');
+      var safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      receiptPath=state.member.household_id+'/'+state.session.user.id+'/'+Date.now()+'-'+safe;
+      var up=await sb.storage.from('receipts').upload(receiptPath,file,{upsert:false});
+      if(up.error)throw new Error(up.error.message);
+    }
+    var row={household_id:state.member.household_id,date:document.getElementById('txDate').value,type:type,category:type==='Transfer'?'Transfer':document.getElementById('txCategory').value,description:document.getElementById('txDesc').value,account:account,to_account:type==='Transfer'?document.getElementById('txTo').value:null,amount:Number(document.getElementById('txAmount').value),receipt_path:receiptPath||null,member_id:state.member.id,member_name:state.member.name,member_email:state.member.email,created_by:state.session.user.id,active:true};
+    var r=await sb.from('transactions').insert(row);if(r.error)throw new Error(r.error.message);
+    closeModal();await load();toast('Transaksi disimpan');
+  }catch(err){toast(err.message)}
+}
+window.deleteTransaction=async function(id){if(!confirm('Hapus transaksi ini?'))return;var r=await sb.from('transactions').update({active:false}).eq('id',id).eq('household_id',state.member.household_id);if(r.error)return toast(r.error.message);await load()}
+window.openBudget=function(){modal('Tambah / Ubah Anggaran','<form id="budgetForm" class="form"><div class="field"><label>Kategori</label><select id="budgetCategory">'+opts(state.categories.filter(function(c){return c.type==='Pengeluaran'}))+'</select></div><div class="field"><label>Nominal</label><input id="budgetAmount" type="number" min="0" required></div><div class="form-actions"><button class="btn primary" type="submit">Simpan</button></div></form>');document.getElementById('budgetForm').onsubmit=saveBudget}
+async function saveBudget(e){e.preventDefault();var row={household_id:state.member.household_id,month:month(),category:document.getElementById('budgetCategory').value,amount:Number(document.getElementById('budgetAmount').value),active:true};var r=await sb.from('budgets').upsert(row,{onConflict:'household_id,month,category'});if(r.error)return toast(r.error.message);closeModal();await load()}
+window.openBill=function(){modal('Tambah Tagihan','<form id="billForm" class="form"><div class="field"><label>Nama tagihan</label><input id="billName" required></div><div class="field"><label>Nominal</label><input id="billAmount" type="number" min="0" required></div><div class="field"><label>Jatuh tempo tanggal</label><input id="billDay" type="number" min="1" max="31" value="1"></div><div class="field"><label>Rekening</label><select id="billAccount">'+opts(state.accounts)+'</select></div><div class="form-actions"><button class="btn primary" type="submit">Simpan</button></div></form>');document.getElementById('billForm').onsubmit=saveBill}
+async function saveBill(e){e.preventDefault();var row={household_id:state.member.household_id,name:document.getElementById('billName').value,category:'Tagihan',amount:Number(document.getElementById('billAmount').value),account:document.getElementById('billAccount').value,due_day:Number(document.getElementById('billDay').value),active:true};var r=await sb.from('bills').insert(row);if(r.error)return toast(r.error.message);closeModal();await load()}
+window.payBill=async function(id){var b=state.bills.find(function(x){return x.id===id});if(!b)return;var tx={household_id:state.member.household_id,date:today(),type:'Pengeluaran',category:b.category||'Tagihan',description:'Bayar '+b.name,account:b.account,amount:Number(b.amount),member_id:state.member.id,member_name:state.member.name,member_email:state.member.email,created_by:state.session.user.id,active:true};var a=await sb.from('transactions').insert(tx);if(a.error)return toast(a.error.message);var u=await sb.from('bills').update({last_paid_month:month()}).eq('id',id).eq('household_id',state.member.household_id);if(u.error)return toast(u.error.message);await load()}
+window.openMember=function(){if(state.member.role!=='Admin')return toast('Hanya Admin yang dapat menambah anggota');modal('Tambah Anggota Gmail','<form id="memberForm" class="form"><div class="field"><label>Nama</label><input id="memberNameInput" required></div><div class="field"><label>Gmail</label><input id="memberEmailInput" type="email" required></div><div class="field"><label>Role</label><select id="memberRoleInput"><option>Member</option><option>Admin</option></select></div><div class="form-actions"><button class="btn primary" type="submit">Simpan</button></div></form><p class="small">Sebaiknya undang Gmail sebelum akun tersebut pertama kali login ke SiRinci.</p>');document.getElementById('memberForm').onsubmit=saveMember}
+async function saveMember(e){e.preventDefault();var r=await sb.rpc('add_household_member',{p_email:document.getElementById('memberEmailInput').value.toLowerCase().trim(),p_name:document.getElementById('memberNameInput').value,p_role:document.getElementById('memberRoleInput').value,p_reminder_email:document.getElementById('memberEmailInput').value.toLowerCase().trim()});if(r.error)return toast(r.error.message);closeModal();await load()}
+document.getElementById('settingsForm').onsubmit=async function(e){e.preventDefault();if(state.member.role!=='Admin')return toast('Hanya Admin yang dapat mengubah pengaturan');var name=document.getElementById('householdInput').value.trim();var r=await sb.from('household_settings').update({household_name:name,updated_at:new Date().toISOString()}).eq('household_id',state.member.household_id);if(r.error)return toast(r.error.message);await sb.from('households').update({name:name}).eq('id',state.member.household_id);await load();toast('Pengaturan disimpan')};
+document.querySelectorAll('.nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.nav button').forEach(function(x){x.classList.remove('active')});document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});b.classList.add('active');document.getElementById(b.dataset.page).classList.add('active')}});
+document.getElementById('loginBtn').onclick=login;document.getElementById('logoutBtn').onclick=logout;
+(async function(){try{var r=await sb.auth.getSession();if(r.error)throw r.error;state.session=r.data.session;if(!state.session){document.getElementById('login').classList.remove('hidden');return}document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');await load()}catch(e){toast(e.message);console.error(e)}})();
+})();
+</script>
+</body>
+</html>

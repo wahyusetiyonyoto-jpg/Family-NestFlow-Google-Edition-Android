@@ -1,48 +1,47 @@
-# Family NestFlow Google Edition v4.0.1 — Android APK
+# SiRinci V1.0
 
-Paket ini mempertahankan arsitektur **Google Edition**: Google Sheets sebagai database, Google Drive untuk bukti transaksi, Google Apps Script sebagai backend, dan identitas anggota berdasarkan akun Google.
+SiRinci adalah aplikasi pencatatan keuangan sederhana dengan login Gmail.
 
-## Cara kerja APK
+## Arsitektur
+- Login: Google OAuth melalui Supabase Auth
+- Database: Supabase PostgreSQL + Row Level Security
+- Bukti transaksi: private Supabase Storage
+- Web: folder `docs/` untuk GitHub Pages
+- Android: launcher ringan ke web SiRinci
+- APK: GitHub Actions
 
-APK adalah launcher Android untuk Web App Apps Script. Pada pemakaian pertama, paste URL deployment yang berakhiran `/exec`. URL disimpan hanya di perangkat melalui `SharedPreferences`. Saat dibuka, Family NestFlow dijalankan melalui browser sistem agar login/authorization Google tidak bergantung pada cookie WebView.
+## Login Gmail-only
+Pengguna cukup menekan **Masuk dengan Gmail**. Saat Gmail pertama kali login:
+1. Supabase memverifikasi akun Google.
+2. `bootstrap_google_user()` membuat ruang keuangan otomatis.
+3. Pengguna pertama menjadi Admin ruang keuangannya.
+4. Rekening dan kategori awal dibuat otomatis.
 
-## 1. Deploy backend Google Edition v4.0.1
+Jika Gmail sudah diundang oleh Admin sebelum login pertama, akun otomatis masuk ke ruang keluarga tersebut.
 
-File sudah disediakan di folder `google-apps-script/`:
+## Setup backend
+Buka Supabase SQL Editor dan jalankan seluruh isi:
+`supabase/setup.sql`
 
-- `Code.gs`
-- `Index.html`
-- `appsscript.json`
+Kemudian aktifkan Google Provider di Supabase Authentication dan masukkan OAuth Client ID + Client Secret Google.
 
-Buat Google Sheet **Family NestFlow Database** → **Extensions → Apps Script**. Salin file di atas, jalankan `QUICK_SETUP_`, lalu deploy sebagai **Web app** dengan **Execute as: User accessing the web app**. Pilih akses yang mewajibkan akun Google bila opsi tersebut tersedia. Salin URL deployment yang berakhiran `/exec`.
+Callback Supabase project:
+`https://mggnfkarjjsejdrocfva.supabase.co/auth/v1/callback`
 
-> Backend pada HOTFIX asal masih bertanda `4.0.0`. Dalam paket Android ini deklarasinya sudah disejajarkan menjadi `4.0.1` supaya sama dengan frontend.
+## GitHub Pages
+Publikasikan folder `docs/` dari branch `main`.
 
-## 2. Build APK melalui GitHub
+URL yang digunakan APK:
+`https://wahyusetiyonyoto-jpg.github.io/Family-NestFlow-Google-Edition-Android/`
 
-1. Buat repository GitHub baru, misalnya `Family-NestFlow-Google-Edition-Android`.
-2. Ekstrak ZIP ini.
-3. Upload **seluruh isi folder hasil ekstrak** ke root repository. Pastikan folder `.github/workflows/` ikut ter-upload.
-4. Commit ke branch `main`.
-5. Buka tab **Actions** → **Build Family NestFlow Google Edition APK**.
-6. Jika belum berjalan otomatis, klik **Run workflow**.
-7. Setelah job hijau, buka run → **Artifacts** → `Family-NestFlow-Google-Edition-v4.0.1-APK`.
-8. Ekstrak artifact. File instalasi bernama `Family-NestFlow-Google-Edition-v4.0.1.apk`.
+## Build APK
+GitHub > Actions > **Build SiRinci V1.0 APK**.
 
-APK debug dari workflow sudah signed untuk testing. Android mungkin meminta izin **Install unknown apps**. Untuk Play Store, buat release AAB dengan upload key milik Anda, bukan debug key.
+Artifact:
+`SiRinci-V1.0-APK`
 
-## 3. Pemakaian pertama di Android
+APK:
+`SiRinci-v1.0.0.apk`
 
-1. Install APK.
-2. Buka **Family NestFlow**.
-3. Paste URL `/exec` dari deployment Apps Script.
-4. Tekan **Simpan & Buka Family NestFlow**.
-5. Pilih/login akun Google yang sudah didaftarkan pada Family NestFlow dan selesaikan authorization bila Google memintanya.
-
-URL dapat diganti atau dihapus dari layar launcher tanpa reinstall APK.
-
-## Catatan keamanan
-
-- APK tidak menerima atau menyimpan password Google, OTP, PIN kartu, maupun kredensial bank.
-- Koneksi hanya dibuka ke URL Apps Script yang Anda masukkan melalui browser sistem.
-- Jangan mengubah deployment menjadi publik tanpa login jika data keluarga harus dibatasi berdasarkan akun Google.
+## Keamanan
+Publishable key Supabase boleh berada di frontend. Jangan pernah memasukkan `service_role`, database password, Google Client Secret, OTP, PIN bank, atau password finansial ke repository.
