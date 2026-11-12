@@ -18,20 +18,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
 
       - name: Install Android SDK 35
         shell: bash
         run: |
           set -euo pipefail
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f | sort -V | tail -1)"
+          fi
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
 
       - name: Set up Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
@@ -48,11 +53,10 @@ jobs:
           test -f app/src/main/AndroidManifest.xml
           test -f app/src/main/java/com/familynestflow/googleedition/MainActivity.java
           test -f docs/index.html
-          test -f docs/supabase-adapter.js
-          test -f docs/supabase-config.js
           test -f supabase/setup.sql
           grep -q "SiRinci" app/src/main/AndroidManifest.xml
-          grep -q "supabase.co" docs/supabase-config.js
+          grep -q "mggnfkarjjsejdrocfva.supabase.co" docs/index.html
+          grep -q "bootstrap_google_user" supabase/setup.sql
 
       - name: Build installable debug APK
         run: gradle --no-daemon clean :app:assembleDebug --stacktrace
