@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'FamilyNestFlowGoogleEdition'
+rootProject.name = 'SiRinciV1'
 include ':app'
