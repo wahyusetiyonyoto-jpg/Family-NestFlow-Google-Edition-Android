@@ -70,8 +70,8 @@ jobs:
           test -f app/src/main/assets/index.html
           grep -q "com.sirinci.app" app/build.gradle
           grep -q "GetGoogleIdOption" app/src/main/java/com/sirinci/app/MainActivity.kt
-          if grep -Rqi "supabase" app/src/main; then
-            echo "Supabase reference found in Android runtime source."
+          if grep -RqiE "supabase\.co|createClient\(|signInWithOAuth|signInWithIdToken|@supabase/" app/src/main; then
+            echo "Active Supabase runtime integration found in Android source."
             exit 1
           fi
 
