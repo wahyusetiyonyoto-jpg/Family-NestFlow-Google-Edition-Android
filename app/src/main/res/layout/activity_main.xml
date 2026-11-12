@@ -1,62 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="28dp">
-
-    <ImageView
-        android:layout_width="88dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="56dp"
-        android:contentDescription="SiRinci"
-        android:src="@drawable/ic_nestflow" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="SiRinci"
-        android:textColor="@color/text"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/version_text"
-        android:textColor="@color/brand"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <TextView
+    android:background="@color/background">
+    <LinearLayout
+        android:id="@+id/loginPanel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:lineSpacingExtra="4dp"
-        android:text="Catat keuangan dengan lebih rinci. Masuk cukup menggunakan akun Gmail Anda."
-        android:textColor="@color/muted"
-        android:textSize="15sp" />
-
-    <Button
-        android:id="@+id/openButton"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="28dp">
+        <ImageView
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginTop="72dp"
+            android:contentDescription="SiRinci"
+            android:src="@drawable/ic_nestflow" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="SiRinci"
+            android:textColor="@color/text"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/version_text"
+            android:textColor="@color/brand"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="Menyiapkan Login dengan Google..."
+            android:textColor="@color/muted"
+            android:textSize="14sp" />
+        <ProgressBar
+            android:id="@+id/loginProgress"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="22dp" />
+        <Button
+            android:id="@+id/googleLoginButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="22dp"
+            android:text="Masuk dengan Google"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:text="Tidak menggunakan Firebase atau Supabase untuk login. Password Google tidak pernah disimpan oleh SiRinci."
+            android:textColor="#94A3B8"
+            android:textSize="11sp" />
+    </LinearLayout>
+    <WebView
+        android:id="@+id/financeWebView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Buka SiRinci"
-        android:textAllCaps="false" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:gravity="center"
-        android:text="Login ditangani oleh Google melalui Supabase. SiRinci tidak menyimpan password Gmail Anda."
-        android:textColor="#94A3B8"
-        android:textSize="11sp" />
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

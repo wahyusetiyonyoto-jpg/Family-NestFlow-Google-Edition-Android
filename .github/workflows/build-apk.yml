@@ -1,12 +1,15 @@
-name: Build SiRinci V1.0 APK
+name: Build SiRinci V1.0 Google Only APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "codex/sirinci-gmail-only" ]
+    branches: [ "main", "codex/sirinci-native-google" ]
 
 permissions:
   contents: read
+
+env:
+  GOOGLE_WEB_CLIENT_ID: ${{ vars.GOOGLE_WEB_CLIENT_ID }}
 
 jobs:
   build-apk:
@@ -43,20 +46,34 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Verify project inputs
+      - name: Restore stable debug signing key
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: sirinci-debug-keystore-v1
+
+      - name: Ensure debug signing key and record OAuth SHA-1
         shell: bash
         run: |
           set -euo pipefail
-          test -f build.gradle
-          test -f settings.gradle
-          test -f app/build.gradle
-          test -f app/src/main/AndroidManifest.xml
-          test -f app/src/main/java/com/familynestflow/googleedition/MainActivity.java
-          test -f docs/index.html
-          test -f supabase/setup.sql
-          grep -q "SiRinci" app/src/main/AndroidManifest.xml
-          grep -q "mggnfkarjjsejdrocfva.supabase.co" docs/index.html
-          grep -q "bootstrap_google_user" supabase/setup.sql
+          mkdir -p "$HOME/.android" release
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -v               -keystore "$HOME/.android/debug.keystore"               -storepass android               -alias androiddebugkey               -keypass android               -keyalg RSA -keysize 2048 -validity 10000               -dname "CN=Android Debug,O=SiRinci,C=ID"
+          fi
+          keytool -list -v             -alias androiddebugkey             -keystore "$HOME/.android/debug.keystore"             -storepass android | tee release/google-oauth-signing.txt
+
+      - name: Verify source is Google-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f app/src/main/java/com/sirinci/app/MainActivity.kt
+          test -f app/src/main/assets/index.html
+          grep -q "com.sirinci.app" app/build.gradle
+          grep -q "GetGoogleIdOption" app/src/main/java/com/sirinci/app/MainActivity.kt
+          if grep -Rqi "supabase" app/src/main; then
+            echo "Supabase reference found in Android runtime source."
+            exit 1
+          fi
 
       - name: Build installable debug APK
         run: gradle --no-daemon clean :app:assembleDebug --stacktrace
@@ -65,24 +82,30 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p release
           APK=app/build/outputs/apk/debug/app-debug.apk
-          OUT=release/SiRinci-v1.0.0.apk
+          OUT=release/SiRinci-v1.0.0-google-only.apk
           cp "$APK" "$OUT"
           SDK_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
           "$SDK_TOOLS/apksigner" verify --verbose --print-certs "$OUT" | tee release/signature-verification.txt
           "$SDK_TOOLS/aapt" dump badging "$OUT" | tee release/apk-information.txt
-          grep -q "package: name='com.familynestflow.googleedition' versionCode='1' versionName='1.0.0'" release/apk-information.txt
-          sha256sum "$OUT" | tee release/SiRinci-v1.0.0.apk.sha256
+          grep -q "package: name='com.sirinci.app' versionCode='1' versionName='1.0.0'" release/apk-information.txt
+          sha256sum "$OUT" | tee release/SiRinci-v1.0.0-google-only.apk.sha256
+          if [ -z "${GOOGLE_WEB_CLIENT_ID:-}" ]; then
+            echo "WARNING: GOOGLE_WEB_CLIENT_ID repository variable is empty. APK builds, but Google login will show configuration required." | tee release/google-login-config-status.txt
+          else
+            echo "GOOGLE_WEB_CLIENT_ID injected: YES" | tee release/google-login-config-status.txt
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SiRinci-V1.0-APK
+          name: SiRinci-V1.0-Google-Only-APK
           path: |
-            release/SiRinci-v1.0.0.apk
-            release/SiRinci-v1.0.0.apk.sha256
+            release/SiRinci-v1.0.0-google-only.apk
+            release/SiRinci-v1.0.0-google-only.apk.sha256
             release/apk-information.txt
             release/signature-verification.txt
+            release/google-oauth-signing.txt
+            release/google-login-config-status.txt
           if-no-files-found: error
           retention-days: 30
