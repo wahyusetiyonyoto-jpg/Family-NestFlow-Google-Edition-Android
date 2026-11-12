@@ -1,17 +1,25 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
 }
 
+def googleWebClientId = System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""
+
 android {
-    namespace 'com.familynestflow.googleedition'
+    namespace 'com.sirinci.app'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.familynestflow.googleedition'
+        applicationId 'com.sirinci.app'
         minSdk 24
         targetSdk 35
         versionCode 1
         versionName '1.0.0'
+        buildConfigField "String", "GOOGLE_WEB_CLIENT_ID", '"' + googleWebClientId + '"'
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
@@ -25,4 +33,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    implementation 'androidx.credentials:credentials:1.6.0'
+    implementation 'androidx.credentials:credentials-play-services-auth:1.6.0'
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.2.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
 }

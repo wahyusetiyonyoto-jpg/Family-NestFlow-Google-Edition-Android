@@ -1,47 +1,48 @@
-# SiRinci V1.0
+# SiRinci V1.0 — Google Only Edition
 
-SiRinci adalah aplikasi pencatatan keuangan sederhana dengan login Gmail.
+SiRinci adalah aplikasi pencatatan keuangan Android yang login langsung menggunakan akun Google/Gmail melalui Android Credential Manager.
 
 ## Arsitektur
-- Login: Google OAuth melalui Supabase Auth
-- Database: Supabase PostgreSQL + Row Level Security
-- Bukti transaksi: private Supabase Storage
-- Web: folder `docs/` untuk GitHub Pages
-- Android: launcher ringan ke web SiRinci
-- APK: GitHub Actions
 
-## Login Gmail-only
-Pengguna cukup menekan **Masuk dengan Gmail**. Saat Gmail pertama kali login:
-1. Supabase memverifikasi akun Google.
-2. `bootstrap_google_user()` membuat ruang keuangan otomatis.
-3. Pengguna pertama menjadi Admin ruang keuangannya.
-4. Rekening dan kategori awal dibuat otomatis.
+- Login: native **Sign in with Google**
+- Supabase Auth: **dihapus**
+- Firebase Auth: **tidak digunakan**
+- Google Apps Script: **tidak digunakan**
+- Runtime web hosting: **tidak digunakan**
+- UI keuangan: HTML lokal di dalam APK melalui WebView
+- Data: local-first, dipisahkan berdasarkan Google unique ID
+- Backup: JSON manual dari menu Pengaturan
+- Build: GitHub Actions
 
-Jika Gmail sudah diundang oleh Admin sebelum login pertama, akun otomatis masuk ke ruang keluarga tersebut.
+## Alur pengguna
 
-## Setup backend
-Buka Supabase SQL Editor dan jalankan seluruh isi:
-`supabase/setup.sql`
+1. Buka SiRinci.
+2. Credential Manager otomatis menampilkan akun Google.
+3. Pilih Gmail.
+4. Dashboard SiRinci langsung terbuka.
+5. Sesi lokal dipertahankan sampai pengguna memilih Keluar.
 
-Kemudian aktifkan Google Provider di Supabase Authentication dan masukkan OAuth Client ID + Client Secret Google.
+## Konfigurasi Google OAuth
 
-Callback Supabase project:
-`https://mggnfkarjjsejdrocfva.supabase.co/auth/v1/callback`
+Login Google memerlukan OAuth Client ID dari Google Cloud.
 
-## GitHub Pages
-Publikasikan folder `docs/` dari branch `main`.
+Ikuti `SETUP_GOOGLE_LOGIN.md`.
 
-URL yang digunakan APK:
-`https://wahyusetiyonyoto-jpg.github.io/Family-NestFlow-Google-Edition-Android/`
+Setelah `GOOGLE_WEB_CLIENT_ID` disimpan sebagai GitHub Repository Variable, jalankan workflow:
 
-## Build APK
-GitHub > Actions > **Build SiRinci V1.0 APK**.
+**Build SiRinci V1.0 Google Only APK**
 
 Artifact:
-`SiRinci-V1.0-APK`
+`SiRinci-V1.0-Google-Only-APK`
 
 APK:
-`SiRinci-v1.0.0.apk`
+`SiRinci-v1.0.0-google-only.apk`
 
-## Keamanan
-Publishable key Supabase boleh berada di frontend. Jangan pernah memasukkan `service_role`, database password, Google Client Secret, OTP, PIN bank, atau password finansial ke repository.
+## Data
+
+V1.0 sengaja tidak memakai Supabase agar autentikasi benar-benar Google-only. Data disimpan lokal pada perangkat untuk masing-masing Gmail. Gunakan Backup/Restore JSON sebelum pindah HP atau instal ulang.
+
+Sinkronisasi otomatis lintas perangkat dapat ditambahkan berikutnya memakai Google Drive Authorization API tanpa menghidupkan kembali Supabase Auth.
+
+
+Build validation marker: Google-only native branch.

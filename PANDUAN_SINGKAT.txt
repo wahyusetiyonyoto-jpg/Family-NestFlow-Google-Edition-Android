@@ -1,23 +1,15 @@
-FAMILY NESTFLOW GOOGLE EDITION v4.0.1 — APK
+SiRinci V1.0 Google Only
 
-A. GOOGLE APPS SCRIPT
-1. Buka Google Sheet Family NestFlow Database.
-2. Extensions > Apps Script.
-3. Pasang Code.gs, Index.html, appsscript.json dari folder google-apps-script.
-4. Jalankan QUICK_SETUP_.
-5. Deploy > New deployment > Web app.
-6. Execute as: User accessing the web app.
-7. Salin URL yang berakhiran /exec.
+1. Run GitHub Actions build awal.
+2. Download artifact dan buka google-oauth-signing.txt.
+3. Buat OAuth Client Android di Google Cloud:
+   package com.sirinci.app + SHA-1 dari artifact.
+4. Buat OAuth Client Web pada project Google Cloud yang sama.
+5. GitHub Settings > Secrets and variables > Actions > Variables.
+6. Buat GOOGLE_WEB_CLIENT_ID berisi Web Client ID.
+7. Run workflow kembali.
+8. Download SiRinci-V1.0-Google-Only-APK.
+9. Install APK.
+10. Saat pertama dibuka, pilih Gmail lalu langsung masuk dashboard.
 
-B. BUILD APK
-1. Ekstrak ZIP Android GitHub Ready.
-2. Upload seluruh isi hasil ekstrak ke repository GitHub branch main.
-3. Actions > Build Family NestFlow Google Edition APK.
-4. Run workflow.
-5. Download artifact Family-NestFlow-Google-Edition-v4.0.1-APK.
-6. Install Family-NestFlow-Google-Edition-v4.0.1.apk.
-
-C. PERTAMA KALI DIBUKA
-1. Paste URL /exec ke APK.
-2. Tekan Simpan & Buka Family NestFlow.
-3. Login akun Google yang terdaftar.
+Supabase Auth, Firebase Auth, dan Apps Script tidak digunakan.
