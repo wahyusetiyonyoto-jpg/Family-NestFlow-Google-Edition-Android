@@ -46,3 +46,9 @@ Sinkronisasi otomatis lintas perangkat dapat ditambahkan berikutnya memakai Goog
 
 
 Build validation marker: Google-only native branch.
+
+
+## V1.1.0
+- Rincian pengeluaran bulanan per kategori.
+- Anggaran dan tagihan pada bulan terpilih.
+- Rencana menabung tahunan dengan target, progres, kebutuhan bulanan, dan riwayat setoran.
