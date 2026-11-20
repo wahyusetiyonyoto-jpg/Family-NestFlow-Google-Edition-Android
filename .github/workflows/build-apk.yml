@@ -1,9 +1,9 @@
-name: Build SiRinci V1.0 Google Only APK
+name: Build SiRinci V1.1 Monthly Savings APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "codex/sirinci-native-google" ]
+    branches: [ "main", "codex/sirinci-monthly-savings" ]
 
 permissions:
   contents: read
@@ -83,13 +83,13 @@ jobs:
         run: |
           set -euo pipefail
           APK=app/build/outputs/apk/debug/app-debug.apk
-          OUT=release/SiRinci-v1.0.0-google-only.apk
+          OUT=release/SiRinci-v1.1.0.apk
           cp "$APK" "$OUT"
           SDK_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
           "$SDK_TOOLS/apksigner" verify --verbose --print-certs "$OUT" | tee release/signature-verification.txt
           "$SDK_TOOLS/aapt" dump badging "$OUT" | tee release/apk-information.txt
-          grep -q "package: name='com.sirinci.app' versionCode='1' versionName='1.0.0'" release/apk-information.txt
-          sha256sum "$OUT" | tee release/SiRinci-v1.0.0-google-only.apk.sha256
+          grep -q "package: name='com.sirinci.app' versionCode='2' versionName='1.1.0'" release/apk-information.txt
+          sha256sum "$OUT" | tee release/SiRinci-v1.1.0.apk.sha256
           if [ -z "${GOOGLE_WEB_CLIENT_ID:-}" ]; then
             echo "WARNING: GOOGLE_WEB_CLIENT_ID repository variable is empty. APK builds, but Google login will show configuration required." | tee release/google-login-config-status.txt
           else
@@ -99,10 +99,10 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SiRinci-V1.0-Google-Only-APK
+          name: SiRinci-V1.1-Monthly-Savings-APK
           path: |
-            release/SiRinci-v1.0.0-google-only.apk
-            release/SiRinci-v1.0.0-google-only.apk.sha256
+            release/SiRinci-v1.1.0.apk
+            release/SiRinci-v1.1.0.apk.sha256
             release/apk-information.txt
             release/signature-verification.txt
             release/google-oauth-signing.txt
